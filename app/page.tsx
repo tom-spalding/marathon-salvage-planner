@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   SALVAGE_DATA,
   MAPS,
-  SALVAGE_VISUALS,
   salvageVisualFor,
   GENERIC_SALVAGE_ICON,
 } from "./data/salvage";
@@ -21,11 +21,53 @@ const MAP_IMAGE_BY_NAME: Record<string, string> = {
 const mapImageFor = (mapName: string) =>
   `${ASSET_BASE_URL}/maps/${MAP_IMAGE_BY_NAME[mapName] ?? "perimeter.png"}`;
 
+const MAP_QUERY_KEY = "map";
+const ITEMS_QUERY_KEY = "items";
+
+const validItemNames = new Set(SALVAGE_DATA.map((item) => item.name));
+
+const parseSelectedMap = (mapParam: string | null) =>
+  MAPS.find((map) => map === mapParam) ?? MAPS[0];
+
+const parseSelectedItems = (itemsParam: string | null) => {
+  if (!itemsParam) {
+    return [];
+  }
+
+  return itemsParam
+    .split(",")
+    .map((item) => item.trim())
+    .filter((item, index, array) => item.length > 0 && validItemNames.has(item) && array.indexOf(item) === index);
+};
+
 export default function Home() {
-  const [selectedMap, setSelectedMap] = useState(MAPS[0]);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const selectedMap = parseSelectedMap(searchParams.get(MAP_QUERY_KEY));
+  const selectedItems = parseSelectedItems(searchParams.get(ITEMS_QUERY_KEY));
+
+  const updateSelection = (nextMap: string, nextItems: string[]) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (nextMap === MAPS[0]) {
+      params.delete(MAP_QUERY_KEY);
+    } else {
+      params.set(MAP_QUERY_KEY, nextMap);
+    }
+
+    if (nextItems.length === 0) {
+      params.delete(ITEMS_QUERY_KEY);
+    } else {
+      params.set(ITEMS_QUERY_KEY, nextItems.join(","));
+    }
+
+    const nextQuery = params.toString();
+    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
+  };
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -38,9 +80,11 @@ export default function Home() {
   }, []);
 
   const toggleItem = (name: string) => {
-    setSelectedItems((prev) =>
-      prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]
-    );
+    const nextItems = selectedItems.includes(name)
+      ? selectedItems.filter((item) => item !== name)
+      : [...selectedItems, name];
+
+    updateSelection(selectedMap, nextItems);
   };
 
   const results = useMemo(() => {
@@ -123,7 +167,7 @@ export default function Home() {
             {MAPS.map((map) => (
               <button
                 key={map}
-                onClick={() => setSelectedMap(map)}
+                onClick={() => updateSelection(map, selectedItems)}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all cursor-pointer ${
                   selectedMap === map
                     ? "bg-amber-500 text-zinc-950 shadow-lg shadow-amber-500/20"
@@ -214,13 +258,13 @@ export default function Home() {
                   </span>
                   <div className="flex items-center gap-3">
                     <button
-                      onClick={() => setSelectedItems(SALVAGE_DATA.map((item) => item.name))}
+                      onClick={() => updateSelection(selectedMap, SALVAGE_DATA.map((item) => item.name))}
                       className="text-xs text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
                     >
                       Select all
                     </button>
                     <button
-                      onClick={() => setSelectedItems([])}
+                      onClick={() => updateSelection(selectedMap, [])}
                       className="text-xs text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
                     >
                       Clear all
