@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { SALVAGE_DATA, MAPS, SALVAGE_VISUALS, salvageVisualFor } from "./data/salvage";
+import {
+  SALVAGE_DATA,
+  MAPS,
+  SALVAGE_VISUALS,
+  salvageVisualFor,
+  GENERIC_SALVAGE_ICON,
+} from "./data/salvage";
 
 export default function Home() {
   const [selectedMap, setSelectedMap] = useState(MAPS[0]);
@@ -129,10 +135,10 @@ export default function Home() {
                       alt={itemName}
                       className="h-5 w-5 rounded object-cover bg-black/10"
                       onError={(event) => {
-                        if (event.currentTarget.src.endsWith("/salvage/salvage-icon.svg")) {
+                        if (event.currentTarget.src === GENERIC_SALVAGE_ICON) {
                           return;
                         }
-                        event.currentTarget.src = "/salvage/salvage-icon.svg";
+                        event.currentTarget.src = GENERIC_SALVAGE_ICON;
                       }}
                     />
                     <span>{itemName}</span>

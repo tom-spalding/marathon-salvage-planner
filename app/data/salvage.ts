@@ -294,8 +294,11 @@ type SalvageVisual = {
   color: string;
 };
 
-const GENERIC_SALVAGE_ICON = "/salvage/salvage-icon.svg";
-const localSalvageImage = (fileName: string) => `/salvage/${fileName}`;
+const GITHUB_PAGES_ASSET_BASE = "https://tom-spalding.github.io/marathon-salvage-planner";
+const ASSET_BASE_URL = process.env.NODE_ENV === "production" ? GITHUB_PAGES_ASSET_BASE : "";
+
+const localSalvageImage = (fileName: string) => `${ASSET_BASE_URL}/salvage/${fileName}`;
+export const GENERIC_SALVAGE_ICON = localSalvageImage("salvage-icon.svg");
 
 export const SALVAGE_VISUALS: Record<string, SalvageVisual> = {
   "Unstable Diode": {
