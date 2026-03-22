@@ -28,6 +28,11 @@ const fraktionMono = localFont({
 export const metadata: Metadata = {
   title: "Marathon Salvage Planner",
   description: "Find the best map locations for your Marathon salvage items",
+  icons: {
+    icon: "/logos/Marathon_Logo_Square_Green.png",
+    shortcut: "/logos/Marathon_Logo_Square_Green.png",
+    apple: "/logos/Marathon_Logo_Square_Green.png",
+  },
 };
 
 export default function RootLayout({
