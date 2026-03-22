@@ -24,7 +24,19 @@ const mapImageFor = (mapName: string) =>
 const MAP_QUERY_KEY = "map";
 const ITEMS_QUERY_KEY = "items";
 
+const slugifyItemName = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
 const validItemNames = new Set(SALVAGE_DATA.map((item) => item.name));
+const itemNameBySlug = new Map(
+  SALVAGE_DATA.map((item) => [slugifyItemName(item.name), item.name]),
+);
+const itemSlugByName = new Map(
+  SALVAGE_DATA.map((item) => [item.name, slugifyItemName(item.name)]),
+);
 
 const parseSelectedMap = (mapParam: string | null) =>
   MAPS.find((map) => map === mapParam) ?? MAPS[0];
@@ -36,8 +48,15 @@ const parseSelectedItems = (itemsParam: string | null) => {
 
   return itemsParam
     .split(",")
-    .map((item) => item.trim())
-    .filter((item, index, array) => item.length > 0 && validItemNames.has(item) && array.indexOf(item) === index);
+    .map((value) => value.trim())
+    .map((value) => {
+      if (validItemNames.has(value)) {
+        return value;
+      }
+
+      return itemNameBySlug.get(value) ?? "";
+    })
+    .filter((item, index, array) => item.length > 0 && array.indexOf(item) === index);
 };
 
 function HomeContent() {
@@ -62,7 +81,10 @@ function HomeContent() {
     if (nextItems.length === 0) {
       params.delete(ITEMS_QUERY_KEY);
     } else {
-      params.set(ITEMS_QUERY_KEY, nextItems.join(","));
+      params.set(
+        ITEMS_QUERY_KEY,
+        nextItems.map((item) => itemSlugByName.get(item) ?? item).join(","),
+      );
     }
 
     const nextQuery = params.toString();
