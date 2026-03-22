@@ -37,7 +37,7 @@ export const SALVAGE_DATA: SalvageEntry[] = [
   // Standard
   {
     name: "Altered Wire",
-    rarity: "Standard",
+    rarity: "Enhanced",
     locations: [{ map: "Perimeter", place: "Station" }],
     containers: ["Munitions Crates", "Locked Rooms"],
   },
