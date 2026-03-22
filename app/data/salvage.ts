@@ -479,69 +479,74 @@ type SalvageVisual = {
 const GITHUB_PAGES_ASSET_BASE = "https://tom-spalding.github.io/marathon-salvage-planner";
 const ASSET_BASE_URL = process.env.NODE_ENV === "production" ? GITHUB_PAGES_ASSET_BASE : "";
 
-const localSalvageImage = (fileName: string) => `${ASSET_BASE_URL}/salvage/${fileName}`;
-export const GENERIC_SALVAGE_ICON = localSalvageImage("salvage-icon.svg");
+const itemNameToImageFile = (itemName: string): string =>
+  itemName.toLowerCase().replace(/\s+/g, "-") + ".webp";
 
-export const SALVAGE_IMAGES: Record<string, string> = {
-  "Compiler Ganglion": localSalvageImage("compiler-ganglion.webp"),
-  "Alien Alloy": localSalvageImage("alien-alloy.webp"),
-  "Hazard Capsule": localSalvageImage("hazard-capsule.webp"),
-  "Synapse Cube": localSalvageImage("synapse-cube.webp"),
-  "Ballistic Turbine": localSalvageImage("ballistic-turbine.webp"),
-  "Biofilament": localSalvageImage("biofilament.webp"),
-  "Biolens Seed": localSalvageImage("biolens-seed.webp"),
-  "Coherence Drive": localSalvageImage("coherence-drive.webp"),
-  "Enzyme Replicator": localSalvageImage("enzyme-replicator.webp"),
-  "Neural Insulation": localSalvageImage("neural-insulation.webp"),
-  "Predictive Framework": localSalvageImage("predictive-framework.webp"),
-  "Reflex Coil": localSalvageImage("reflex-coil.webp"),
-  "Shell ID": localSalvageImage("shell-id.webp"),
-  "Amygdala Drive": localSalvageImage("amygdala-drive.webp"),
-  "Anomalous Wire": localSalvageImage("anomalous-wire.webp"),
-  "Biomata Node": localSalvageImage("biomata-node.webp"),
-  "Biomata Resin": localSalvageImage("biomata-resin.webp"),
-  "Cetinite Rods": localSalvageImage("cetinite-rods.webp"),
-  "Dynamic Lens": localSalvageImage("dynamic-lens.webp"),
-  "Nanozymes": localSalvageImage("nanozymes.webp"),
-  "Neurochem Pack": localSalvageImage("neurochem-pack.webp"),
-  "Paradox Circuit": localSalvageImage("paradox-circuit.webp"),
-  "Polymer Wire": localSalvageImage("polymer-wire.webp"),
-  "Steel Rods": localSalvageImage("steel-rods.webp"),
-  "Sterilized Biostripping": localSalvageImage("sterilized-biostripping.webp"),
-  "Tachyon Filament": localSalvageImage("tachyon-filament.webp"),
-  "UESC Obedience Matrix": localSalvageImage("uesc-obedience-matrix.webp"),
-  "Aluminum Rods": localSalvageImage("aluminum-rods.webp"),
-  "Basic Xerogel": localSalvageImage("basic-xerogel.webp"),
-  "Carbon Wire": localSalvageImage("carbon-wire.webp"),
-  "Deimosite Rods": localSalvageImage("deimosite-rods.webp"),
-  "Dermachem Pack": localSalvageImage("dermachem-pack.webp"),
-  "Drone Node": localSalvageImage("drone-node.webp"),
-  "Dynamic Compounds": localSalvageImage("dynamic-compounds.webp"),
-  "Epoxy Resin": localSalvageImage("epoxy-resin.webp"),
-  "Fractal Circuit": localSalvageImage("fractal-circuit.webp"),
-  "Hydrocarbon Rubber": localSalvageImage("hydrocarbon-rubber.webp"),
-  "Nanocomposites": localSalvageImage("nanocomposites.webp"),
-  "Plastic Filament": localSalvageImage("plastic-filament.webp"),
-  "Putty Explosive": localSalvageImage("putty-explosive.webp"),
-  "Sparkleaf": localSalvageImage("sparkleaf.webp"),
-  "Storage Drive": localSalvageImage("storage-drive.webp"),
-  "Surveillance Lens": localSalvageImage("surveillance-lens.webp"),
-  "Altered Wire": localSalvageImage("altered-wire.webp"),
-  "Data Card": localSalvageImage("data-card.webp"),
-  "Unstable Biomass": localSalvageImage("unstable-biomass.webp"),
-  "Unstable Diode": localSalvageImage("unstable-diode.webp"),
-  "Unstable Gel": localSalvageImage("unstable-gel.webp"),
-  "Unstable Gunmetal": localSalvageImage("unstable-gunmetal.webp"),
-  "Unstable Lead": localSalvageImage("unstable-lead.webp"),
-  "Weapon Parts": localSalvageImage("weapon-parts.webp"),
-};
+const salvageImagePath = (itemName: string): string =>
+  `${ASSET_BASE_URL}/salvage/${itemNameToImageFile(itemName)}`;
+
+export const GENERIC_SALVAGE_ICON = `${ASSET_BASE_URL}/salvage/salvage-icon.svg`;
+
+export const SALVAGE_IMAGES: string[] = [
+  "Compiler Ganglion",
+  "Alien Alloy",
+  "Hazard Capsule",
+  "Synapse Cube",
+  "Ballistic Turbine",
+  "Biofilament",
+  "Biolens Seed",
+  "Coherence Drive",
+  "Enzyme Replicator",
+  "Neural Insulation",
+  "Predictive Framework",
+  "Reflex Coil",
+  "Shell ID",
+  "Amygdala Drive",
+  "Anomalous Wire",
+  "Biomata Node",
+  "Biomata Resin",
+  "Cetinite Rods",
+  "Dynamic Lens",
+  "Nanozymes",
+  "Neurochem Pack",
+  "Paradox Circuit",
+  "Polymer Wire",
+  "Steel Rods",
+  "Sterilized Biostripping",
+  "Tachyon Filament",
+  "UESC Obedience Matrix",
+  "Aluminum Rods",
+  "Basic Xerogel",
+  "Carbon Wire",
+  "Deimosite Rods",
+  "Dermachem Pack",
+  "Drone Node",
+  "Dynamic Compounds",
+  "Epoxy Resin",
+  "Fractal Circuit",
+  "Hydrocarbon Rubber",
+  "Nanocomposites",
+  "Plastic Filament",
+  "Putty Explosive",
+  "Sparkleaf",
+  "Storage Drive",
+  "Surveillance Lens",
+  "Altered Wire",
+  "Data Card",
+  "Unstable Biomass",
+  "Unstable Diode",
+  "Unstable Gel",
+  "Unstable Gunmetal",
+  "Unstable Lead",
+  "Weapon Parts",
+];
 
 /** Resolved visual for an item name (never undefined — avoids silent lookup misses). */
 export function salvageVisualFor(itemName: string): SalvageVisual {
   const entry = SALVAGE_BY_NAME.get(itemName);
   const rarity = entry?.rarity ?? "Standard";
   return {
-    image: SALVAGE_IMAGES[itemName] ?? GENERIC_SALVAGE_ICON,
+    image: SALVAGE_IMAGES.includes(itemName) ? salvageImagePath(itemName) : GENERIC_SALVAGE_ICON,
     color: SALVAGE_RARITY_COLOR[rarity],
   };
 }
