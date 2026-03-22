@@ -1,6 +1,6 @@
-export type MapName = "Perimeter" | "Outpost" | "Dire Marsh" | "Cryo Archives";
+export type MapName = "Perimeter" | "Outpost" | "Dire Marsh" | "Cryo Archive";
 
-export const MAPS: MapName[] = ["Perimeter", "Dire Marsh", "Outpost"];
+export const MAPS: MapName[] = ["Perimeter", "Dire Marsh", "Outpost", "Cryo Archive"];
 
 export type SalvageEntry = {
   name: string;
@@ -269,21 +269,21 @@ export const SALVAGE_DATA: SalvageEntry[] = [
   {
     name: "Alien Alloy",
     locations: [
-      { map: "Cryo Archives", place: "Cryo Archives" },
+      { map: "Cryo Archive", place: "Cryo Archives" },
     ],
     containers: [],
   },
   {
     name: "Hazard Capsule",
     locations: [
-      { map: "Cryo Archives", place: "Cryo Archives" },
+      { map: "Cryo Archive", place: "Cryo Archives" },
     ],
     containers: [],
   },
   {
     name: "Synapse Cube",
     locations: [
-      { map: "Cryo Archives", place: "Cryo Archives" },
+      { map: "Cryo Archive", place: "Cryo Archives" },
     ],
     containers: [],
   },

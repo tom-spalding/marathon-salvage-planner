@@ -13,13 +13,14 @@ const GITHUB_PAGES_ASSET_BASE = "https://tom-spalding.github.io/marathon-salvage
 const ASSET_BASE_URL = process.env.NODE_ENV === "production" ? GITHUB_PAGES_ASSET_BASE : "";
 
 const MAP_IMAGE_BY_NAME: Record<string, string> = {
-  Perimeter: "perimeter.png",
-  Outpost: "outpost.png",
-  "Dire Marsh": "dire-marsh.png",
+  Perimeter: "perimeter.jpg",
+  Outpost: "outpost.jpg",
+  "Dire Marsh": "dire-marsh.jpg",
+  "Cryo Archive": "cryo-archive.png",
 };
 
 const mapImageFor = (mapName: string) =>
-  `${ASSET_BASE_URL}/maps/${MAP_IMAGE_BY_NAME[mapName] ?? "perimeter.png"}`;
+  `${ASSET_BASE_URL}/maps/${MAP_IMAGE_BY_NAME[mapName] ?? "perimeter.jpg"}`;
 
 const MAP_QUERY_KEY = "map";
 const ITEMS_QUERY_KEY = "items";
@@ -38,8 +39,10 @@ const itemSlugByName = new Map(
   SALVAGE_DATA.map((item) => [item.name, slugifyItemName(item.name)]),
 );
 
-const parseSelectedMap = (mapParam: string | null) =>
-  MAPS.find((map) => map === mapParam) ?? MAPS[0];
+const parseSelectedMap = (mapParam: string | null) => {
+  const normalizedMap = mapParam === "Cryo Archives" ? "Cryo Archive" : mapParam;
+  return MAPS.find((map) => map === normalizedMap) ?? MAPS[0];
+};
 
 const parseSelectedItems = (itemsParam: string | null) => {
   if (!itemsParam) {
