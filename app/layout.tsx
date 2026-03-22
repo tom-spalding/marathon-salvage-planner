@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const marathonShapiro = localFont({
+  src: "./fonts/MarathonShapiro-Wide65.woff2",
+  variable: "--font-marathon-shapiro",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const fraktionMono = localFont({
+  src: [
+    {
+      path: "./fonts/PPFraktionMono-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/PPFraktionMono-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+  ],
+  variable: "--font-fraktion-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +38,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${marathonShapiro.variable} ${fraktionMono.variable} h-full antialiased`}
     >
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col font-sans">
         <main className="flex-1 bg-zinc-950">{children}</main>
         <footer className="border-t border-zinc-800 bg-zinc-950 px-4 py-4 text-center text-sm text-zinc-400">
           <a
