@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
+import { Suspense, useState, useMemo, useRef, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   SALVAGE_DATA,
@@ -40,7 +40,7 @@ const parseSelectedItems = (itemsParam: string | null) => {
     .filter((item, index, array) => item.length > 0 && validItemNames.has(item) && array.indexOf(item) === index);
 };
 
-export default function Home() {
+function HomeContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -421,5 +421,13 @@ export default function Home() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
   );
 }
