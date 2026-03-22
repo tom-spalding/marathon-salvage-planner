@@ -41,8 +41,8 @@ export default function RootLayout({
       className={`${marathonShapiro.variable} ${fraktionMono.variable} h-full antialiased`}
     >
       <body className="min-h-screen flex flex-col font-sans">
-        <main className="flex-1 bg-zinc-950">{children}</main>
-        <footer className="mt-2 border-t border-zinc-800 bg-zinc-950 px-4 py-4 text-center text-sm text-zinc-400">
+        <main className="flex-1 bg-zinc-950 pb-2">{children}</main>
+        <footer className="border-t border-zinc-800 bg-zinc-950 px-4 py-4 text-center text-sm text-zinc-400">
           <a
             href="https://github.com/tom-spalding/marathon-salvage-planner"
             target="_blank"
