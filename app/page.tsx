@@ -185,11 +185,17 @@ export default function Home() {
 
             {dropdownOpen && (
               <div className="absolute z-50 w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
-                {selectedItems.length > 0 && (
-                  <div className="sticky top-0 px-4 py-2 bg-zinc-800 border-b border-zinc-700 flex justify-between items-center">
-                    <span className="text-xs text-zinc-400">
-                      {selectedItems.length} selected
-                    </span>
+                <div className="sticky top-0 px-4 py-2 bg-zinc-800 border-b border-zinc-700 flex justify-between items-center">
+                  <span className="text-xs text-zinc-400">
+                    {selectedItems.length} selected
+                  </span>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setSelectedItems(SALVAGE_DATA.map((item) => item.name))}
+                      className="text-xs text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
+                    >
+                      Select all
+                    </button>
                     <button
                       onClick={() => setSelectedItems([])}
                       className="text-xs text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
@@ -197,7 +203,7 @@ export default function Home() {
                       Clear all
                     </button>
                   </div>
-                )}
+                </div>
                 {SALVAGE_DATA.map((item) => (
                   <label
                     key={item.name}
