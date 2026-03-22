@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { SALVAGE_DATA, MAPS } from "./data/salvage";
+import { SALVAGE_DATA, MAPS, SALVAGE_VISUALS } from "./data/salvage";
 
 export default function Home() {
   const [selectedMap, setSelectedMap] = useState(MAPS[0]);
@@ -106,6 +106,41 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        {selectedItems.length > 0 && (
+          <div className="mb-6">
+            <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-2">
+              Selected Items
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {selectedItems.map((itemName) => {
+                const visual = SALVAGE_VISUALS[itemName];
+                return (
+                  <button
+                    key={itemName}
+                    onClick={() => toggleItem(itemName)}
+                    className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-semibold text-zinc-950 ring-1 ring-black/25 transition-transform hover:scale-[1.02] cursor-pointer"
+                    style={{ backgroundColor: visual?.color ?? "rgb(202, 202, 214)" }}
+                    title={`Click to unselect ${itemName}`}
+                  >
+                    <img
+                      src={visual?.image}
+                      alt={itemName}
+                      className="h-5 w-5 rounded object-cover bg-black/10"
+                      onError={(event) => {
+                        if (event.currentTarget.src.endsWith("/salvage/salvage-icon.svg")) {
+                          return;
+                        }
+                        event.currentTarget.src = "/salvage/salvage-icon.svg";
+                      }}
+                    />
+                    <span>{itemName}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Item Multi-Select Dropdown */}
         <div className="mb-8">
