@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useState, useMemo, useRef, useEffect } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   SALVAGE_DATA,
   MAPS,
@@ -63,17 +63,34 @@ const parseSelectedItems = (itemsParam: string | null) => {
 };
 
 function HomeContent() {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const selectedMap = parseSelectedMap(searchParams.get(MAP_QUERY_KEY));
-  const selectedItems = parseSelectedItems(searchParams.get(ITEMS_QUERY_KEY));
+  const [selectedMap, setSelectedMap] = useState(MAPS[0]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const updateSelection = (nextMap: string, nextItems: string[]) => {
-    const params = new URLSearchParams(searchParams.toString());
+  useEffect(() => {
+    setSelectedMap(parseSelectedMap(searchParams.get(MAP_QUERY_KEY)));
+    setSelectedItems(parseSelectedItems(searchParams.get(ITEMS_QUERY_KEY)));
+  }, [searchParams]);
+
+  useEffect(() => {
+    const syncFromLocation = () => {
+      const params = new URLSearchParams(window.location.search);
+      setSelectedMap(parseSelectedMap(params.get(MAP_QUERY_KEY)));
+      setSelectedItems(parseSelectedItems(params.get(ITEMS_QUERY_KEY)));
+    };
+
+    window.addEventListener("popstate", syncFromLocation);
+    return () => window.removeEventListener("popstate", syncFromLocation);
+  }, []);
+
+  const updateSelection = (nextMap: (typeof MAPS)[number], nextItems: string[]) => {
+    setSelectedMap(nextMap);
+    setSelectedItems(nextItems);
+
+    const params = new URLSearchParams(window.location.search);
 
     if (nextMap === MAPS[0]) {
       params.delete(MAP_QUERY_KEY);
@@ -91,7 +108,9 @@ function HomeContent() {
     }
 
     const nextQuery = params.toString();
-    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
+    const nextPath = window.location.pathname;
+    const nextUrl = nextQuery ? `${nextPath}?${nextQuery}` : nextPath;
+    window.history.replaceState(window.history.state, "", nextUrl);
   };
 
   useEffect(() => {
