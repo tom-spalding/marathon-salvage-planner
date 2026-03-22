@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
-import { SALVAGE_DATA, MAPS, SALVAGE_VISUALS } from "./data/salvage";
+import { SALVAGE_DATA, MAPS, SALVAGE_VISUALS, salvageVisualFor } from "./data/salvage";
 
 export default function Home() {
   const [selectedMap, setSelectedMap] = useState(MAPS[0]);
@@ -114,17 +114,18 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-2">
               {selectedItems.map((itemName) => {
-                const visual = SALVAGE_VISUALS[itemName];
+                const visual = salvageVisualFor(itemName);
                 return (
                   <button
                     key={itemName}
+                    type="button"
                     onClick={() => toggleItem(itemName)}
-                    className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-semibold text-zinc-950 ring-1 ring-black/25 transition-transform hover:scale-[1.02] cursor-pointer"
-                    style={{ backgroundColor: visual?.color ?? "rgb(202, 202, 214)" }}
+                    className="salvage-chip-bg inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-xs font-semibold text-zinc-950 ring-1 ring-black/25 transition-transform hover:scale-[1.02] cursor-pointer"
+                    style={{ "--salvage-bg": visual.color } as React.CSSProperties}
                     title={`Click to unselect ${itemName}`}
                   >
                     <img
-                      src={visual?.image}
+                      src={visual.image}
                       alt={itemName}
                       className="h-5 w-5 rounded object-cover bg-black/10"
                       onError={(event) => {
@@ -250,14 +251,18 @@ export default function Home() {
                           </span>
                         </div>
                         <div className="mt-2 flex flex-wrap gap-1.5">
-                          {items.map((item) => (
-                            <span
-                              key={item}
-                              className="text-xs bg-zinc-700 text-zinc-300 px-2 py-0.5 rounded-full"
-                            >
-                              {item}
-                            </span>
-                          ))}
+                          {items.map((item) => {
+                            const itemVisual = salvageVisualFor(item);
+                            return (
+                              <span
+                                key={item}
+                                className="salvage-chip-bg text-xs font-semibold text-zinc-950 px-2 py-0.5 rounded-full ring-1 ring-black/25"
+                                style={{ "--salvage-bg": itemVisual.color } as React.CSSProperties}
+                              >
+                                {item}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>

@@ -439,3 +439,15 @@ export const SALVAGE_VISUALS: Record<string, SalvageVisual> = {
     color: "rgb(255, 244, 12)",
   },
 };
+
+const FALLBACK_SALVAGE_COLOR = "rgb(202, 202, 214)";
+
+/** Resolved visual for an item name (never undefined — avoids silent lookup misses). */
+export function salvageVisualFor(itemName: string): SalvageVisual {
+  return (
+    SALVAGE_VISUALS[itemName] ?? {
+      image: GENERIC_SALVAGE_ICON,
+      color: FALLBACK_SALVAGE_COLOR,
+    }
+  );
+}

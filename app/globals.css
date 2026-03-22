@@ -32,3 +32,13 @@ h5,
 h6 {
   font-family: var(--font-marathon-shapiro), ui-sans-serif, system-ui, sans-serif;
 }
+
+/*
+  Tailwind preflight sets `button { background-color: transparent }` in @layer base.
+  Inline `backgroundColor` can lose to that cascade in some cases; utilities layer wins.
+*/
+@layer utilities {
+  .salvage-chip-bg {
+    background-color: var(--salvage-bg, rgb(202, 202, 214));
+  }
+}
