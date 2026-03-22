@@ -9,6 +9,18 @@ import {
   GENERIC_SALVAGE_ICON,
 } from "./data/salvage";
 
+const GITHUB_PAGES_ASSET_BASE = "https://tom-spalding.github.io/marathon-salvage-planner";
+const ASSET_BASE_URL = process.env.NODE_ENV === "production" ? GITHUB_PAGES_ASSET_BASE : "";
+
+const MAP_IMAGE_BY_NAME: Record<string, string> = {
+  Perimeter: "perimeter.png",
+  Outpost: "outpost.png",
+  "Dire Marsh": "dire-marsh.png",
+};
+
+const mapImageFor = (mapName: string) =>
+  `${ASSET_BASE_URL}/maps/${MAP_IMAGE_BY_NAME[mapName] ?? "perimeter.png"}`;
+
 export default function Home() {
   const [selectedMap, setSelectedMap] = useState(MAPS[0]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -89,6 +101,17 @@ export default function Home() {
           <p className="text-zinc-500 text-sm mt-1">
             Select a map and items to find the best farming locations.
           </p>
+        </div>
+
+        <div className="mb-4">
+          <img
+            src={mapImageFor(selectedMap)}
+            alt={`${selectedMap} map`}
+            className="w-full rounded-lg border border-zinc-800 bg-zinc-900 object-cover"
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
         </div>
 
         {/* Map Selector */}

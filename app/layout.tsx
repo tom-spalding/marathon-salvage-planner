@@ -42,7 +42,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col font-sans">
         <main className="flex-1 bg-zinc-950">{children}</main>
-        <footer className="border-t border-zinc-800 bg-zinc-950 px-4 py-4 text-center text-sm text-zinc-400">
+        <footer className="mt-2 border-t border-zinc-800 bg-zinc-950 px-4 py-4 text-center text-sm text-zinc-400">
           <a
             href="https://github.com/tom-spalding/marathon-salvage-planner"
             target="_blank"

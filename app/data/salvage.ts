@@ -1,6 +1,6 @@
 export type MapName = "Perimeter" | "Outpost" | "Dire Marsh" | "Cryo Archives";
 
-export const MAPS: MapName[] = ["Perimeter", "Outpost", "Dire Marsh"];
+export const MAPS: MapName[] = ["Perimeter", "Dire Marsh", "Outpost"];
 
 export type SalvageEntry = {
   name: string;
