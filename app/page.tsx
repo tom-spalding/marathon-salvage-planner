@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import {
   SALVAGE_DATA,
   MAPS,
+  SALVAGE_RARITY_COLOR,
   salvageVisualFor,
   GENERIC_SALVAGE_ICON,
 } from "./data/salvage";
@@ -318,7 +319,8 @@ function HomeContent() {
                 {SALVAGE_DATA.map((item) => (
                   <label
                     key={item.name}
-                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-zinc-700/50 cursor-pointer select-none"
+                    className="flex items-center gap-3 pl-3 pr-4 py-2.5 border-l-4 border-solid hover:bg-zinc-700/50 cursor-pointer select-none"
+                    style={{ borderLeftColor: SALVAGE_RARITY_COLOR[item.rarity] }}
                   >
                     <input
                       type="checkbox"
