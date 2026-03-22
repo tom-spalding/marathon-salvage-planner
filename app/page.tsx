@@ -72,7 +72,7 @@ export default function Home() {
       : `${selectedItems.length} items selected`;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 p-4 sm:p-8">
+    <div className="w-full bg-zinc-950 text-zinc-100 px-4 pt-4 pb-0 sm:px-8 sm:pt-8 sm:pb-0">
       <div className="max-w-xl mx-auto">
         {/* Header */}
         <div className="mb-8">
