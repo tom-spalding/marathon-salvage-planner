@@ -26,6 +26,15 @@ const mapImageFor = (mapName: string) =>
 const MAP_QUERY_KEY = "map";
 const ITEMS_QUERY_KEY = "items";
 
+const RARITY_SORT_ORDER = {
+  Standard: 0,
+  Enhanced: 1,
+  Deluxe: 2,
+  Superior: 3,
+  Prestige: 4,
+  Contraband: 5,
+} as const;
+
 const slugifyItemName = (name: string) =>
   name
     .toLowerCase()
@@ -70,6 +79,18 @@ function HomeContent() {
 
   const [selectedMap, setSelectedMap] = useState(MAPS[0]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  const sortedSalvageData = useMemo(
+    () =>
+      [...SALVAGE_DATA].sort((a, b) => {
+        const rarityDiff = RARITY_SORT_ORDER[a.rarity] - RARITY_SORT_ORDER[b.rarity];
+        if (rarityDiff !== 0) {
+          return rarityDiff;
+        }
+        return a.name.localeCompare(b.name);
+      }),
+    [],
+  );
 
   useEffect(() => {
     setSelectedMap(parseSelectedMap(searchParams.get(MAP_QUERY_KEY)));
@@ -303,7 +324,12 @@ function HomeContent() {
                   </span>
                   <div className="flex items-center gap-3">
                     <button
-                      onClick={() => updateSelection(selectedMap, SALVAGE_DATA.map((item) => item.name))}
+                      onClick={() =>
+                        updateSelection(
+                          selectedMap,
+                          sortedSalvageData.map((item) => item.name),
+                        )
+                      }
                       className="text-xs text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
                     >
                       Select all
@@ -316,7 +342,7 @@ function HomeContent() {
                     </button>
                   </div>
                 </div>
-                {SALVAGE_DATA.map((item) => (
+                {sortedSalvageData.map((item) => (
                   <label
                     key={item.name}
                     className="flex items-center gap-3 pl-3 pr-4 py-2.5 border-l-4 border-solid hover:bg-zinc-700/50 cursor-pointer select-none"
