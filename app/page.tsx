@@ -9,9 +9,7 @@ import {
   salvageVisualFor,
   GENERIC_SALVAGE_ICON,
 } from "./data/salvage";
-
-const GITHUB_PAGES_ASSET_BASE = "https://tom-spalding.github.io/marathon-salvage-planner";
-const ASSET_BASE_URL = process.env.NODE_ENV === "production" ? GITHUB_PAGES_ASSET_BASE : "";
+import { ASSET_BASE_URL } from "./lib/assets";
 
 const MAP_IMAGE_BY_NAME: Record<string, string> = {
   Perimeter: "perimeter.jpg",

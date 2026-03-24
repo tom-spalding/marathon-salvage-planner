@@ -1,3 +1,5 @@
+import { ASSET_BASE_URL } from "../lib/assets";
+
 export type MapName = "Perimeter" | "Outpost" | "Dire Marsh" | "Cryo Archive";
 
 export const MAPS: MapName[] = ["Perimeter", "Dire Marsh", "Outpost", "Cryo Archive"];
@@ -475,9 +477,6 @@ type SalvageVisual = {
   image: string;
   color: string;
 };
-
-const GITHUB_PAGES_ASSET_BASE = "https://tom-spalding.github.io/marathon-salvage-planner";
-const ASSET_BASE_URL = process.env.NODE_ENV === "production" ? GITHUB_PAGES_ASSET_BASE : "";
 
 const itemNameToImageFile = (itemName: string): string =>
   itemName.toLowerCase().replace(/\s+/g, "-") + ".webp";

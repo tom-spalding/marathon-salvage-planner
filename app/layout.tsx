@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { assetUrl } from "./lib/assets";
 import "./globals.css";
 
 const marathonShapiro = localFont({
@@ -28,11 +29,6 @@ const fraktionMono = localFont({
 export const metadata: Metadata = {
   title: "Marathon Salvage Planner",
   description: "Find the best map locations for your Marathon salvage items",
-  icons: {
-    icon: "/logos/Marathon_Logo_Square_Green.png",
-    shortcut: "/logos/Marathon_Logo_Square_Green.png",
-    apple: "/logos/Marathon_Logo_Square_Green.png",
-  },
 };
 
 export default function RootLayout({
@@ -45,6 +41,22 @@ export default function RootLayout({
       lang="en"
       className={`${marathonShapiro.variable} ${fraktionMono.variable} h-full antialiased`}
     >
+      <head>
+        <link
+          rel="icon"
+          href={assetUrl("/logos/Marathon_Logo_Square_Green.png")}
+          type="image/png"
+        />
+        <link
+          rel="shortcut icon"
+          href={assetUrl("/logos/Marathon_Logo_Square_Green.png")}
+          type="image/png"
+        />
+        <link
+          rel="apple-touch-icon"
+          href={assetUrl("/logos/Marathon_Logo_Square_Green.png")}
+        />
+      </head>
       <body className="min-h-screen flex flex-col font-sans">
         <main className="flex-1 bg-zinc-950 pb-2">{children}</main>
         <footer className="border-t border-zinc-800 bg-zinc-950 px-4 py-4 text-center text-sm text-zinc-400">
