@@ -35,6 +35,55 @@ export type SalvageEntry = {
   containers: string[];
 };
 
+export type SalvageItemType =
+  | "Resin"
+  | "Node"
+  | "Plant"
+  | "Chempack"
+  | "Biostrip"
+  | "Filament"
+  | "Rod"
+  | "Wire"
+  | "Compound"
+  | "Lens"
+  | "Drive"
+  | "Circuit";
+
+export const SALVAGE_ITEM_TYPES: SalvageItemType[] = [
+  "Resin",
+  "Node",
+  "Plant",
+  "Chempack",
+  "Biostrip",
+  "Filament",
+  "Rod",
+  "Wire",
+  "Compound",
+  "Lens",
+  "Drive",
+  "Circuit",
+];
+
+export const SALVAGE_ITEMS_BY_TYPE: Record<SalvageItemType, string[]> = {
+  Resin: ["Unstable Gel", "Drone Resin", "Biomata Resin", "Reflex Coil"],
+  Node: ["Unstable Gel", "Drone Node", "Biomata Node", "Enzyme Replicator"],
+  Plant: ["Unstable Biomass", "Sparkleaf", "Tarax Seed", "Biolens Seed"],
+  Chempack: ["Unstable Biomass", "Dermachem Pack", "Neurochem Pack", "Enzyme Replicator"],
+  Biostrip: [
+    "Unstable Biomass",
+    "Reclaimed Biostripping",
+    "Sterilized Biostripping",
+    "Neural Insulation",
+  ],
+  Filament: ["Unstable Gunmetal", "Plasma Filament", "Tachyon Filament", "Reflex Coil"],
+  Rod: ["Unstable Gunmetal", "Deimosite Rods", "Cetinite Rods", "Ballistic Turbine"],
+  Wire: ["Unstable Gunmetal", "Altered Wire", "Anomalous Wire", "Predictive Framework"],
+  Compound: ["Unstable Lead", "Dynamic Compounds", "Volatile Compounds", "Ballistic Turbine"],
+  Lens: ["Unstable Lead", "Surveillance Lens", "Thoughtwave Lens", "Biolens Seed"],
+  Drive: ["Unstable Diode", "Storage Drive", "Amygdala Drive", "Predictive Framework"],
+  Circuit: ["Unstable Diode", "Fractal Circuit", "Paradox Circuit", "Neural Insulation"],
+};
+
 export const SALVAGE_DATA: SalvageEntry[] = [
   // Standard
   {
@@ -194,7 +243,7 @@ export const SALVAGE_DATA: SalvageEntry[] = [
     containers: [],
   },
   {
-    name: "Plastic Filament",
+    name: "Plasma Filament",
     rarity: "Enhanced",
     locations: [{ map: "Dire Marsh", place: "AI Uplink" }],
     containers: ["Bioprinters"],
@@ -525,7 +574,7 @@ export const SALVAGE_IMAGES: string[] = [
   "Fractal Circuit",
   "Hydrocarbon Rubber",
   "Nanocomposites",
-  "Plastic Filament",
+  "Plasma Filament",
   "Putty Explosive",
   "Sparkleaf",
   "Storage Drive",

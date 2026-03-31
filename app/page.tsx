@@ -6,6 +6,9 @@ import {
   SALVAGE_DATA,
   MAPS,
   SALVAGE_RARITY_COLOR,
+  SALVAGE_ITEMS_BY_TYPE,
+  SALVAGE_ITEM_TYPES,
+  type SalvageItemType,
   salvageVisualFor,
   GENERIC_SALVAGE_ICON,
 } from "./data/salvage";
@@ -74,6 +77,8 @@ function HomeContent() {
   const searchParams = useSearchParams();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [typeDropdownOpen, setTypeDropdownOpen] = useState(false);
+  const typeDropdownRef = useRef<HTMLDivElement>(null);
 
   const [selectedMap, setSelectedMap] = useState(MAPS[0]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -135,8 +140,18 @@ function HomeContent() {
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setDropdownOpen(false);
+      }
+
+      if (
+        typeDropdownRef.current &&
+        !typeDropdownRef.current.contains(e.target as Node)
+      ) {
+        setTypeDropdownOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -150,6 +165,23 @@ function HomeContent() {
 
     updateSelection(selectedMap, nextItems);
   };
+
+  const selectedType = useMemo(() => {
+    if (selectedItems.length === 0) {
+      return null;
+    }
+
+    const selectedSet = new Set(selectedItems);
+    return (
+      SALVAGE_ITEM_TYPES.find((typeName) => {
+        const mappedItems = SALVAGE_ITEMS_BY_TYPE[typeName];
+        if (mappedItems.length !== selectedSet.size) {
+          return false;
+        }
+        return mappedItems.every((itemName) => selectedSet.has(itemName));
+      }) ?? null
+    );
+  }, [selectedItems]);
 
   const results = useMemo(() => {
     if (selectedItems.length === 0) return { locations: [], containers: [] };
@@ -196,6 +228,8 @@ function HomeContent() {
       : selectedItems.length === 1
       ? selectedItems[0]
       : `${selectedItems.length} items selected`;
+
+  const typeDisplayText = selectedType ?? "Select salvage type...";
 
   return (
     <div className="w-full bg-zinc-950 text-zinc-100 px-4 pt-4 pb-0 sm:px-8 sm:pt-8 sm:pb-0">
@@ -354,6 +388,69 @@ function HomeContent() {
                     />
                     <span className="text-sm text-zinc-300">{item.name}</span>
                   </label>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <p className="text-xs font-semibold tracking-widest text-zinc-500 mb-2">
+            Salvage Items by Type
+          </p>
+          <div className="relative" ref={typeDropdownRef}>
+            <button
+              onClick={() => setTypeDropdownOpen((v) => !v)}
+              className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-sm hover:border-zinc-500 transition-colors cursor-pointer"
+            >
+              <span className={`truncate ${selectedType ? "text-zinc-100" : "text-zinc-500"}`}>
+                {typeDisplayText}
+              </span>
+              <svg
+                className={`w-4 h-4 flex-shrink-0 text-zinc-500 transition-transform duration-200 ${
+                  typeDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            {typeDropdownOpen && (
+              <div className="absolute z-40 w-full mt-1 bg-zinc-800 border border-zinc-700 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateSelection(selectedMap, []);
+                    setTypeDropdownOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2.5 text-sm text-zinc-400 hover:bg-zinc-700/50 transition-colors cursor-pointer"
+                >
+                  Clear type selection
+                </button>
+                {SALVAGE_ITEM_TYPES.map((typeName: SalvageItemType) => (
+                  <button
+                    key={typeName}
+                    type="button"
+                    onClick={() => {
+                      updateSelection(selectedMap, SALVAGE_ITEMS_BY_TYPE[typeName]);
+                      setTypeDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors cursor-pointer ${
+                      selectedType === typeName
+                        ? "bg-zinc-700 text-amber-300"
+                        : "text-zinc-300 hover:bg-zinc-700/50"
+                    }`}
+                  >
+                    {typeName}
+                  </button>
                 ))}
               </div>
             )}
