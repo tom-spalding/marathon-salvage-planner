@@ -395,7 +395,7 @@ function HomeContent() {
         </div>
 
         <div className="mb-8">
-          <p className="text-xs font-semibold tracking-widest text-zinc-500 mb-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-2">
             Salvage Items by Type
           </p>
           <div className="relative" ref={typeDropdownRef}>
